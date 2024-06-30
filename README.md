@@ -9,7 +9,7 @@ Make sure you have Flutter installed. For installation instructions, visit [Flut
 
 ### Installation
 1. Clone the repository:
-git clone https://github.com/your/repository.git
+git clone https://github.com/mrowa223/crypto_coins_list.git
 cd repository_name
 
 2. Install dependencies:
