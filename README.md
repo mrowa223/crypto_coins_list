@@ -1,16 +1,31 @@
-# crypto_coins_list
-
-A new Flutter project.
+# Crypto Currencies List
+This Flutter application fetches and displays a list of cryptocurrency coins using data from the CryptoCompare API.
 
 ## Getting Started
+To get started with this project, follow these steps:
 
-This project is a starting point for a Flutter application.
+### Prerequisites
+Make sure you have Flutter installed. For installation instructions, visit [Flutter.dev](https://flutter.dev/docs/get-started/install).
 
-A few resources to get you started if this is your first Flutter project:
+### Installation
+1. Clone the repository:
+   git clone https://github.com/your/repository.git
+   cd repository_name
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Install dependencies:
+flutter pub get
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Run the application:
+flutter run
+
+Features:
+Fetches cryptocurrency data (BTC, ETH, BNB, XRP, DASH, DOGE) from CryptoCompare API.
+Displays a list of cryptocurrencies with their current price in USD.
+Allows navigation to view details of each cryptocurrency.
+Screenshots
+Include screenshots of your application here if applicable.
+
+Dependencies
+dio: For making network requests.
+get_it: For dependency injection.
+flutter_svg: For SVG rendering.
