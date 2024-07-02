@@ -23,6 +23,7 @@ flutter run
 - Fetches cryptocurrency data (BTC, ETH, BNB, XRP, DASH, DOGE) from CryptoCompare API.
 - Displays a list of cryptocurrencies with their current price in USD.
 - Allows navigation to view details of each cryptocurrency.
+- Loading page
 
 ## Dependencies
 
