@@ -24,7 +24,7 @@ flutter run
 - Displays a list of cryptocurrencies with their current price in USD.
 - Allows navigation to view details of each cryptocurrency.
 - Loading page
-
+- Refactor code
 ## Dependencies
 
 - **dio**: For making network requests.
