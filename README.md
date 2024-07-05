@@ -25,6 +25,7 @@ flutter run
 - Allows navigation to view details of each cryptocurrency.
 - Loading page
 - Refactor code
+- Use bloc
 ## Dependencies
 
 - **dio**: For making network requests.
