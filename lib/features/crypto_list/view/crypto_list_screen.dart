@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:crypto_coins_list/features/crypto_list/bloc/crypto_list_bloc.dart';
 import 'package:crypto_coins_list/features/crypto_list/widgets/widgets.dart';
 import 'package:crypto_coins_list/repositories/crypto_coins/crypto_coins.dart';
@@ -14,83 +16,79 @@ class CryptoListScreen extends StatefulWidget {
 }
 
 class _CryptoListScreenState extends State<CryptoListScreen> {
-  List<CryptoCoin>? _cryptoCoinsList;
-
   final _cryptoListBloc = CryptoListBloc(GetIt.I<AbstractCoinsRepository>());
 
   @override
   void initState() {
-    _cryptoListBloc.add(LoadCryptoList());
     super.initState();
+    final completer = Completer<void>();
+    _cryptoListBloc.add(LoadCryptoList(completer));
+    completer.future.catchError((error) {
+      // Handle error if needed
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('CryptoCurrenciesList'),
+        title: const Text('CryptoCurrenciesList'),
         leading: const Icon(Icons.arrow_back),
       ),
-      body: BlocBuilder<CryptoListBloc, CryptoListState>(
-        bloc: _cryptoListBloc,
-        builder: (context, state) {
-          if (state is CryptoListLoaded) {
-            return ListView.separated(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          final completer = Completer<void>();
+          _cryptoListBloc.add(LoadCryptoList(completer));
+          return completer.future;
+        },
+        child: BlocBuilder<CryptoListBloc, CryptoListState>(
+          bloc: _cryptoListBloc,
+          builder: (context, state) {
+            if (state is CryptoListLoaded) {
+              return ListView.separated(
                 padding: const EdgeInsets.only(top: 16),
                 itemCount: state.coinsList.length,
                 separatorBuilder: (context, index) => const Divider(),
                 itemBuilder: (context, i) {
                   final coin = state.coinsList[i];
-
                   return CryptoCoinTile(
                     coin: coin,
                   );
-                });
-          }
-          if (state is CryptoListLoadingFailure) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'Something went wrong',
-                  ),
-                  Text('Please try againg later'),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  TextButton(
+                },
+              );
+            }
+            if (state is CryptoListLoadingFailure) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Something went wrong'),
+                    const Text('Please try again later'),
+                    const SizedBox(height: 30),
+                    TextButton(
                       onPressed: () {
-                        _cryptoListBloc.add(LoadCryptoList());
+                        final completer = Completer<void>();
+                        _cryptoListBloc.add(LoadCryptoList(completer));
                       },
-                      child: Text('Try Again'))
-                ],
-              ),
+                      child: const Text('Try Again'),
+                    ),
+                  ],
+                ),
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
             );
-          }
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
-        },
+          },
+        ),
       ),
     );
+  }
 
-    //    (_cryptoCoinsList == null)
-    //       ? const Center(
-    //           child: CircularProgressIndicator(),
-    //         )
-    //       : ListView.separated(
-    //           padding: const EdgeInsets.only(top: 16),
-    //           itemCount: _cryptoCoinsList!.length,
-    //           separatorBuilder: (context, index) => const Divider(),
-    //           itemBuilder: (context, i) {
-    //             final coin = _cryptoCoinsList![i];
-
-    //             return CryptoCoinTile(
-    //               coin: coin,
-    //             );
-    //           }),
-    // );
+  @override
+  void dispose() {
+    _cryptoListBloc.close();
+    super.dispose();
   }
 }
