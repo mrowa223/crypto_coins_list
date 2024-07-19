@@ -26,6 +26,7 @@ flutter run
 - Loading page
 - Refactor code
 - Use bloc, equatable
+- use hive, logger
 ## Dependencies
 
 - **dio**: For making network requests.
